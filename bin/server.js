@@ -13,7 +13,7 @@ const PORT = 8080;
 let router = express.Router();
 
 router.use((req, res, next) => {
-  console.log(`${moment().toString()}\t${req.method}\t${req.baseUrl}`);
+  console.log(`${moment().toString()}\t${req.method}\t${req.originalUrl}`);
   next();
 });
 
