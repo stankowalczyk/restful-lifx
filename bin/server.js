@@ -1,8 +1,12 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import {Client as Lifx} from 'node-lifx';
 import moment from 'moment';
+import Promise from 'bluebird';
 
 let app = express();
+let lifxClient = Promise.promisifyAll(new Lifx());
+lifxClient.init();
 
 // Ensure our app uses body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,6 +23,62 @@ router.use((req, res, next) => {
 
 router.get('/', (req, res) => {
   res.status(200).send('RESTful-LIFX - A NodeJS RESTful API for interacting with your LIFX bulbs locally');
+});
+
+router.put('/all/on', (req, res) => {
+  let response = { successful: [], failed: [] };
+
+  Promise.each(lifxClient.lights(), (light, index, length) => {
+    return new Promise(result => light.on(0, result))
+    .then(() => {
+      return response.successful.push({
+        id: light.id,
+        address: light.address,
+        port: light.port,
+        label: light.label,
+        status: light.status
+      });
+    }).catch(err => {
+      console.error(err);
+      return response.failed.push({
+        id: light.id,
+        address: light.address,
+        port: light.port,
+        label: light.label,
+        status: light.status
+      });
+    });
+  }).then(() => {
+    res.status(200).send(response);
+  });
+});
+
+router.put('/all/off', (req, res) => {
+  let response = { successful: [], failed: [] };
+
+  Promise.each(lifxClient.lights(), (light, index, length) => {
+    return new Promise(result => light.off(0, result))
+    .then(() => {
+      return response.successful.push({
+        id: light.id,
+        address: light.address,
+        port: light.port,
+        label: light.label,
+        status: light.status
+      });
+    }).catch(err => {
+      console.error(err);
+      return response.failed.push({
+        id: light.id,
+        address: light.address,
+        port: light.port,
+        label: light.label,
+        status: light.status
+      });
+    });
+  }).then(() => {
+    res.status(200).send(response);
+  });
 });
 
 app.use('/api', router);
