@@ -27,6 +27,7 @@ router.get('/', (req, res) => {
 
 router.put('/all/on', all.on);
 router.put('/all/off', all.off);
+router.put('/all/colour', all.colour);
 
 app.use('/api', router);
 
