@@ -18,4 +18,16 @@ export default class Lifx {
     Lifx.init();
     return lifxClient;
   }
+
+  static simplifyLightObject(light) {
+    if (!light) throw new Error('Light must be defined');
+
+    return {
+      id: light.id,
+      address: light.address,
+      port: light.port,
+      label: light.label,
+      status: light.status
+    }
+  }
 }
