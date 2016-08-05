@@ -40,6 +40,29 @@ export default class Lifx {
     }
   }
 
+  static validateDurationParameter(reqBody) {
+    let result = {
+      errors: [],
+      warnings: [],
+      info: []
+    }
+
+    if (!reqBody.duration) {
+      result.info.push('Body did not have duration argument, using default (0).');
+      reqBody.duration = 0;
+    } else if (isNaN(reqBody.duration)) {
+      result.warnings.push('Duration is NaN, using default (0).');
+      reqBody.duration = 0;
+    } else if (reqBody.duration < 0) {
+      result.warnings.push('Duration is not greater than zero, using default (0).');
+      reqBody.duration = 0;
+    }
+
+    reqBody.duration   = parseInt(reqBody.duration, 10);
+
+    return result;
+  }
+
   static validateColourParameters(reqBody) {
     let result = {
       errors: [],
@@ -73,22 +96,15 @@ export default class Lifx {
       reqBody.kelvin = 3500;
     }
 
-    if (!reqBody.duration) {
-      result.info.push('Body did not have duration argument, using default (0).');
-      reqBody.duration = 0;
-    } else if (isNaN(reqBody.duration)) {
-      result.warnings.push('Duration is NaN, using default (0).');
-      reqBody.duration = 0;
-    } else if (reqBody.duration < 0) {
-      result.warnings.push('Duration is not greater than zero, using default (0).');
-      reqBody.duration = 0;
-    }
+    let durationResult = Lifx.validateDurationParameter(reqBody);
+    result.errors = result.errors.concat(durationResult.errors);
+    result.warnings = result.errors.concat(durationResult.warnings);
+    result.info = result.errors.concat(durationResult.info);
 
     reqBody.hue        = parseInt(reqBody.hue, 10);
     reqBody.saturation = parseInt(reqBody.saturation, 10);
     reqBody.brightness = parseInt(reqBody.brightness, 10);
     reqBody.kelvin     = parseInt(reqBody.kelvin, 10);
-    reqBody.duration   = parseInt(reqBody.duration, 10);
 
     return result;
   }

@@ -8,8 +8,17 @@ export default class All {
       successful: [],
       failed: [] };
 
+    let result = lifx.validateDurationParameter(req.body);
+    Object.assign(response, result);
+
+    if(response.errors.length > 0) {
+      return res.status(400).send(response);
+    }
+
+    let {duration} = req.body;
+
     Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.onAsync(0)
+      return light.onAsync(duration)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
       }).catch(err => {
@@ -26,8 +35,17 @@ export default class All {
       successful: [],
       failed: [] };
 
+    let result = lifx.validateDurationParameter(req.body);
+    Object.assign(response, result);
+
+    if(response.errors.length > 0) {
+      return res.status(400).send(response);
+    }
+
+    let {duration} = req.body;
+
     Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.offAsync(0)
+      return light.offAsync(duration)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
       }).catch(err => {
