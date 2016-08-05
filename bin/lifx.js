@@ -10,6 +10,15 @@ export default class Lifx {
     if (inited === false) {
       lifxClient = Promise.promisifyAll(new LifxClient());
       lifxClient.init();
+
+      lifxClient.on('light-new', (light) => {
+        lifxClient.devices[light.address] = Promise.promisifyAll(light);
+      });
+
+      lifxClient.on('light-online', (light) => {
+        lifxClient.devices[light.address] = Promise.promisifyAll(light);
+      });
+
       inited = true;
     }
   }

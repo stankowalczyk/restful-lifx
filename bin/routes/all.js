@@ -9,7 +9,7 @@ export default class All {
       failed: [] };
 
     Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return new Promise(result => light.on(0, result))
+      return light.onAsync(0)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
       }).catch(err => {
@@ -27,7 +27,7 @@ export default class All {
       failed: [] };
 
     Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return new Promise(result => light.off(0, result))
+      return light.offAsync(0)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
       }).catch(err => {
@@ -57,7 +57,7 @@ export default class All {
     let {hue, saturation, brightness, kelvin, duration} = req.body;
 
     Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return new Promise(result => light.color(hue, saturation, brightness, kelvin, duration, result))
+      return light.colorAsync(hue, saturation, brightness, kelvin, duration)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
       }).catch(err => {
@@ -86,7 +86,7 @@ export default class All {
     };
 
     Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return Promise.promisifyAll(light).getStateAsync()
+      return light.getStateAsync()
       .then(data => {
         return response.successful.push(Object.assign(lifx.simplifyLightObject(light), data));
       }).catch(err => {
