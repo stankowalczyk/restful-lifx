@@ -35,6 +35,8 @@ router.get('/all/firmware', all.firmwareVersion);
 router.get('/all/hardware', all.hardwareVersion);
 router.get('/all/firmwareinfo', all.firmwareInfo);
 router.get('/all/firmwareInfo', all.firmwareInfo);
+router.get('/all/wifistats', all.wifiStats);
+router.get('/all/wifiStats', all.wifiStats);
 
 app.use('/api', router);
 
