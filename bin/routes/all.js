@@ -3,6 +3,7 @@ import Promise from 'bluebird';
 import lifx from '../lifx';
 
 export default class All {
+
   static on(req, res) {
     let response = {
       successful: [],
@@ -11,9 +12,7 @@ export default class All {
     let result = lifx.validateDurationParameter(req.body);
     Object.assign(response, result);
 
-    if(response.errors.length > 0) {
-      return res.status(400).send(response);
-    }
+    if(response.errors.length > 0) return res.status(400).send(response);
 
     let {duration} = req.body;
 
@@ -38,9 +37,7 @@ export default class All {
     let result = lifx.validateDurationParameter(req.body);
     Object.assign(response, result);
 
-    if(response.errors.length > 0) {
-      return res.status(400).send(response);
-    }
+    if(response.errors.length > 0) return res.status(400).send(response);
 
     let {duration} = req.body;
 
@@ -68,9 +65,7 @@ export default class All {
     let result = lifx.validateColourParameters(req.body);
     Object.assign(response, result);
 
-    if(response.errors.length > 0) {
-      return res.status(400).send(response);
-    }
+    if(response.errors.length > 0) return res.status(400).send(response);
 
     let {hue, saturation, brightness, kelvin, duration} = req.body;
 
@@ -231,4 +226,5 @@ export default class All {
       return res.status(200).send(response);
     });
   }
+
 };

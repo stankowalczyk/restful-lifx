@@ -6,6 +6,7 @@ let lifxClient;
 let inited = false;
 
 export default class Lifx {
+  
   static init() {
     if (inited === false) {
       lifxClient = Promise.promisifyAll(new LifxClient());
@@ -108,4 +109,5 @@ export default class Lifx {
 
     return result;
   }
+
 }
