@@ -17,7 +17,7 @@ export default class All {
 
     let {duration} = req.body;
 
-    Promise.each(lifx.getClient().lights(), (light, index, length) => {
+    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
       return light.onAsync(duration)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
@@ -44,7 +44,7 @@ export default class All {
 
     let {duration} = req.body;
 
-    Promise.each(lifx.getClient().lights(), (light, index, length) => {
+    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
       return light.offAsync(duration)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
@@ -74,7 +74,7 @@ export default class All {
 
     let {hue, saturation, brightness, kelvin, duration} = req.body;
 
-    Promise.each(lifx.getClient().lights(), (light, index, length) => {
+    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
       return light.colorAsync(hue, saturation, brightness, kelvin, duration)
       .then(() => {
         return response.successful.push(lifx.simplifyLightObject(light));
@@ -85,7 +85,7 @@ export default class All {
     }).then(() => {
       return res.status(200).send(response);
     });
-  };
+  }
 
   static lightInfo(req, res) {
     let response = [];
@@ -94,8 +94,8 @@ export default class All {
       response.push(lifx.simplifyLightObject(light));
     });
 
-    res.status(200).send(response);
-  };
+    return res.status(200).send(response);
+  }
 
   static lightState(req, res) {
     let response = {
@@ -103,7 +103,7 @@ export default class All {
       failed: []
     };
 
-    Promise.each(lifx.getClient().lights(), (light, index, length) => {
+    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
       return light.getStateAsync()
       .then(data => {
         return response.successful.push(Object.assign(lifx.simplifyLightObject(light), data));
@@ -114,7 +114,7 @@ export default class All {
     }).then(() => {
       return res.status(200).send(response);
     });
-  };
+  }
 
   static firmwareVersion(req, res) {
     let response = {
@@ -122,7 +122,7 @@ export default class All {
       failed: []
     };
 
-    Promise.each(lifx.getClient().lights(), (light, index, length) => {
+    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
       return light.getFirmwareVersionAsync()
       .then(data => {
         return response.successful.push(Object.assign(
@@ -136,4 +136,4 @@ export default class All {
       return res.status(200).send(response);
     });
   }
-}
+};
