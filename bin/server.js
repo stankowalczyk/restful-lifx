@@ -31,6 +31,7 @@ router.put('/all/colour', all.colour);
 router.get('/all/info', all.lightInfo);
 router.get('/all/infofmation', all.lightInfo);
 router.get('/all/state', all.lightState);
+router.get('/all/firmware', all.firmwareVersion);
 
 app.use('/api', router);
 
