@@ -33,6 +33,8 @@ router.get('/all/infofmation', all.lightInfo);
 router.get('/all/state', all.lightState);
 router.get('/all/firmware', all.firmwareVersion);
 router.get('/all/hardware', all.hardwareVersion);
+router.get('/all/firmwareinfo', all.firmwareInfo);
+router.get('/all/firmwareInfo', all.firmwareInfo);
 
 app.use('/api', router);
 

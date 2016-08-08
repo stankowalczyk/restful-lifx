@@ -155,4 +155,23 @@ export default class All {
       return res.status(200).send(response);
     });
   }
+
+  static firmwareInfo(req, res) {
+    let response = {
+      successful: [],
+      failed: []
+    };
+
+    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
+      return light.getFirmwareInfoAsync()
+      .then(data => {
+        return response.successful.push(Object.assign(lifx.simplifyLightObject(light),{ firmwareInfo: data }));
+      }).catch(err => {
+        console.error(err);
+        return response.failed.push(lifx.simplifyLightObject(light));
+      });
+    }).then(() => {
+      return res.status(200).send(response);
+    });
+  }
 };
