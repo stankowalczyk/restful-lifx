@@ -10,21 +10,13 @@ export default class All {
       failed: [] };
 
     let result = lifx.validateDurationParameter(req.body);
-    Object.assign(response, result);
-
-    if(response.errors.length > 0) return res.status(400).send(response);
+    if(result.errors.length > 0) return res.status(400).send(result);
 
     let {duration} = req.body;
 
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.onAsync(duration)
-      .then(() => {
-        return response.successful.push(lifx.simplifyLightObject(light));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
+    return lifx.turnOn(lifx.getClient().lights(), duration)
+    .then(result => {
+      Object.assign(response, result);
       return res.status(200).send(response);
     });
   }
@@ -35,21 +27,14 @@ export default class All {
       failed: [] };
 
     let result = lifx.validateDurationParameter(req.body);
-    Object.assign(response, result);
+    if(result.errors.length > 0) return res.status(400).send(result);
 
-    if(response.errors.length > 0) return res.status(400).send(response);
 
     let {duration} = req.body;
 
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.offAsync(duration)
-      .then(() => {
-        return response.successful.push(lifx.simplifyLightObject(light));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
+    return lifx.turnOff(lifx.getClient().lights(), duration)
+    .then(result => {
+      Object.assign(response, result);
       return res.status(200).send(response);
     });
   }
@@ -63,168 +48,47 @@ export default class All {
 
     // Returns results, and also validates integers
     let result = lifx.validateColourParameters(req.body);
-    Object.assign(response, result);
-
-    if(response.errors.length > 0) return res.status(400).send(response);
+    if(result.errors.length > 0) return res.status(400).send(result);
 
     let {hue, saturation, brightness, kelvin, duration} = req.body;
 
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.colorAsync(hue, saturation, brightness, kelvin, duration)
-      .then(() => {
-        return response.successful.push(lifx.simplifyLightObject(light));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
+    return lifx.changeColour(lifx.getClient().lights(), duration, hue, saturation, brightness, kelvin)
+    .then(result => {
+      Object.assign(response, result);
       return res.status(200).send(response);
     });
   }
 
   static lightInfo(req, res) {
-    let response = [];
-
-    lifx.getClient().lights().forEach(light => {
-      response.push(lifx.simplifyLightObject(light));
-    });
-
-    return res.status(200).send(response);
+    return res.status(200).send(lifx.getBulbInfo(lifx.getClient().lights()));
   }
 
   static lightState(req, res) {
-    let response = {
-      successful: [],
-      failed: []
-    };
-
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.getStateAsync()
-      .then(data => {
-        return response.successful.push(Object.assign(lifx.simplifyLightObject(light), data));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
-      return res.status(200).send(response);
-    });
+    return lifx.getBulbState(lifx.getClient().lights()).then(result => res.status(200).send(result));
   }
 
   static firmwareVersion(req, res) {
-    let response = {
-      successful: [],
-      failed: []
-    };
-
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.getFirmwareVersionAsync()
-      .then(data => {
-        return response.successful.push(Object.assign(
-          lifx.simplifyLightObject(light),
-          { firmwareMajorVersion: data.majorVersion, firmwareMinorVersion: data.minorVersion }));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
-      return res.status(200).send(response);
-    });
+    return lifx.getFirmwareVersion(lifx.getClient().lights()).then(result => res.status(200).send(result));
   }
 
   static hardwareVersion(req, res) {
-    let response = {
-      successful: [],
-      failed: []
-    };
-
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.getHardwareVersionAsync()
-      .then(data => {
-        return response.successful.push(Object.assign(lifx.simplifyLightObject(light), { hardwareVersion: data }));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
-      return res.status(200).send(response);
-    });
+    return lifx.getHardwareVersion(lifx.getClient().lights()).then(result => res.status(200).send(result));
   }
 
   static firmwareInfo(req, res) {
-    let response = {
-      successful: [],
-      failed: []
-    };
-
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.getFirmwareInfoAsync()
-      .then(data => {
-        return response.successful.push(Object.assign(lifx.simplifyLightObject(light), { firmwareInfo: data }));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
-      return res.status(200).send(response);
-    });
+    return lifx.getFirmwareInfo(lifx.getClient().lights()).then(result => res.status(200).send(result));
   }
 
   static wifiStats(req, res) {
-    let response = {
-      successful: [],
-      failed: []
-    };
-
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.getWifiInfoAsync()
-      .then(data => {
-        return response.successful.push(Object.assign(lifx.simplifyLightObject(light), { wifiStats: data }));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
-      return res.status(200).send(response);
-    });
+    return lifx.getWifiStats(lifx.getClient().lights()).then(result => res.status(200).send(result));
   }
 
   static wifiVersion(req, res) {
-    let response = {
-      successful: [],
-      failed: []
-    };
-
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.getWifiVersionAsync()
-      .then(data => {
-        return response.successful.push(Object.assign(lifx.simplifyLightObject(light), { wifiVersion: data }));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
-      return res.status(200).send(response);
-    });
+    return lifx.getWifiVersion(lifx.getClient().lights()).then(result => res.status(200).send(result));
   }
 
   static ambientLight(req, res) {
-    let response = {
-      successful: [],
-      failed: []
-    };
-
-    return Promise.each(lifx.getClient().lights(), (light, index, length) => {
-      return light.getAmbientLightAsync()
-      .then(data => {
-        return response.successful.push(Object.assign(lifx.simplifyLightObject(light), { ambientLight: data }));
-      }).catch(err => {
-        console.error(err);
-        return response.failed.push(lifx.simplifyLightObject(light));
-      });
-    }).then(() => {
-      return res.status(200).send(response);
-    });
+    return lifx.getAmbientLight(lifx.getClient().lights()).then(result => res.status(200).send(result));
   }
 
 };

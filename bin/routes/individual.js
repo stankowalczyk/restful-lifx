@@ -22,11 +22,9 @@ export default class Individual {
 
     let {duration} = req.body;
 
-    return req.light.onAsync(duration)
-    .then(() => res.status(200).send({ successful: req.simplifiedLight }))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send({ failed: req.simplifiedLight });
+    return lifx.turnOn([ req.light ], duration)
+    .then(result => {
+      return res.status(200).send(result);
     });
   }
 
@@ -36,11 +34,9 @@ export default class Individual {
 
     let {duration} = req.body;
 
-    return req.light.offAsync(duration)
-    .then(() => res.status(200).send({ successful: req.simplifiedLight }))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send({ failed: req.simplifiedLight });
+    return lifx.turnOff([ req.light ], duration)
+    .then(result => {
+      return res.status(200).send(result);
     });
   }
 
@@ -51,11 +47,9 @@ export default class Individual {
 
     let {hue, saturation, brightness, kelvin, duration} = req.body;
 
-    return req.light.colorAsync(hue, saturation, brightness, kelvin, duration)
-    .then(() => res.status(200).send({ successful: req.simplifiedLight }))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send({ failed: req.simplifiedLight });
+    return lifx.changeColour([ req.light ], duration, hue, saturation, brightness, kelvin)
+    .then(result => {
+      return res.status(200).send(result);
     });
   }
 
@@ -64,68 +58,31 @@ export default class Individual {
   }
 
   static lightState(req, res) {
-    return req.light.getStateAsync()
-    .then(data => res.status(200).send(Object.assign(req.simplifiedLight, data)))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send(req.simplifiedLight);
-    });
+    return lifx.getBulbState([ req.light ]).then(result => res.status(200).send(result));
   }
 
   static firmwareVersion(req, res) {
-    return req.light.getFirmwareVersionAsync()
-    .then(data => {
-      return res.status(200).send(Object.assign(req.simplifiedLight,
-        { firmwareMajorVersion: data.majorVersion, firmwareMinorVersion: data.minorVersion }));
-    }).catch(err => {
-      console.error(err);
-      return res.status(200).send(req.simplifiedLight);
-    });
+    return lifx.getFirmwareVersion([ req.light ]).then(result => res.status(200).send(result));
   }
 
   static hardwareVersion(req, res) {
-    return req.light.getHardwareVersionAsync()
-    .then(data => res.status(200).send(Object.assign(req.simplifiedLight, { hardwareVersion: data })))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send(req.simplifiedLight);
-    });
+    return lifx.getHardwareVersion([ req.light ]).then(result => res.status(200).send(result));
   }
 
   static firmwareInfo(req, res) {
-    return req.light.getFirmwareInfoAsync()
-    .then(data => res.status(200).send(Object.assign(req.simplifiedLight, { firmwareInfo: data })))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send(req.simplifiedLight);
-    });
+    return lifx.getFirmwareInfo([ req.light ]).then(result => res.status(200).send(result));
   }
 
   static wifiStats(req, res) {
-    return req.light.getWifiInfoAsync()
-    .then(data => res.status(200).send(Object.assign(req.simplifiedLight, { wifiStats: data })))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send(req.simplifiedLight);
-    });
+    return lifx.getWifiStats([ req.light ]).then(result => res.status(200).send(result));
   }
 
   static wifiVersion(req, res) {
-    return req.light.getWifiVersionAsync()
-    .then(data => res.status(200).send(Object.assign(req.simplifiedLight, { wifiVersion: data })))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send(req.simplifiedLight);
-    });
+    return lifx.getWifiVersion([ req.light ]).then(result => res.status(200).send(result));
   }
 
   static ambientLight(req, res) {
-    return req.light.getAmbientLightAsync()
-    .then(data => res.status(200).send(Object.assign(req.simplifiedLight, { ambientLight: data })))
-    .catch(err => {
-      console.error(err);
-      return res.status(400).send(req.simplifiedLight);
-    });
+    return lifx.getAmbientLight([ req.light ]).then(result => res.status(200).send(result));
   }
 
 };
