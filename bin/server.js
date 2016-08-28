@@ -26,6 +26,7 @@ router.get('/', (req, res) => {
   res.status(200).send('RESTful-LIFX - A NodeJS RESTful API for interacting with your LIFX bulbs locally');
 });
 
+router.get('/all/bulbs',        all.lightInfo);
 router.put('/all/on',           all.on);
 router.put('/all/off',          all.off);
 router.put('/all/colour',       all.colour);
