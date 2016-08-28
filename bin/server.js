@@ -1,10 +1,20 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import moment from 'moment';
+import process from 'process';
 
-import all from './routes/all';
+import bodyParser from 'body-parser';
+import express    from 'express';
+import moment     from 'moment';
+
+import all        from './routes/all';
 import individual from './routes/individual';
-import lifx from './lifx';
+import lifx       from './lifx';
+
+function toInt(value) {
+  return Number(value);
+}
+
+function isInt(value) {
+  return Number.isInteger(value);
+}
 
 lifx.init();
 
@@ -13,7 +23,21 @@ let app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const PORT = 8080;
+let port = 8080;
+
+if (process.env.RESTFUL_LIFX_PORT) {
+  let parsedValue = toInt(process.env.RESTFUL_LIFX_PORT);
+  if (isInt(parsedValue)) port = parsedValue;
+  else console.log('Error, environment variable is not an integer');
+}
+
+let args = process.argv;
+args.splice(0,2);
+if (args.length === 1) {
+  let parsedValue = toInt(args[0]);
+  if (isInt(parsedValue)) port = parsedValue;
+  else console.log('Error, parameter is not an integer');
+} else if (args.length > 1) console.log('Error only one parameter accepted, using default port 8080');
 
 let router = express.Router();
 
@@ -63,7 +87,7 @@ router.get('/:light/ambientLight', individual.checkLight, individual.ambientLigh
 
 app.use('/api', router);
 
-app.listen(PORT);
+app.listen(port);
 console.log('RESTful-LIFX server started');
-console.log(`Server listening on port: ${PORT}`);
+console.log(`Server listening on port: ${port}`);
 console.log(`Log Time\t\t\t\tMethod\tURL`);
