@@ -25,77 +25,93 @@ This project uses [node-LIFX](https://www.npmjs.com/package/node-lifx) in order 
 
 You can either control all lights, or an individual like. The endpoint for controlling all lights starts with `/all`, and endpoints which control an individual light start with `/:light` (where `:light` is a bulb id or Ip address).
 
-### Get all lights
+### Client
 
-Endpoint: `GET /all/bulbs`
+#### Start bulb discovery
+
+Endpoint: `PUT /api/startDiscovery` or `PUT /api/startdiscovery`
+
+Returns blank body, refer to Http status code.
+
+#### Stop bulb discovery
+
+Endpoint: `PUT /api/stopDiscovery` or `PUT /api/stopdiscovery`
+
+Returns blank body, refer to Http status code.
+
+### Lights
+
+#### Get all lights
+
+Endpoint: `GET /api/all/bulbs`
 
 Returns JSON, an array of all lights with basic information about them.
 
-### On
+#### On
 
-Endpoint `PUT /all/on` or `PUT /:light/on`
+Endpoint `PUT /api/all/on` or `PUT /api/:light/on`
 
 Turns on the specified bulb(s). Returns JSON specifying lights which succeeded and those which failed.
 
-### Off
+#### Off
 
-Endpoint `PUT /all/off` or `PUT /:light/off`
+Endpoint `PUT /api/all/off` or `PUT /api/:light/off`
 
 Turns off the specified bulb(s). Returns JSON specifying lights which succeeded and those which failed.
 
-### Colour
+#### Colour
 
-Endpoint `PUT /all/colour` or `PUT /:light/colour`
+Endpoint `PUT /api/all/colour` or `PUT /api/:light/colour`
 
 With parameters: Duration (in milliseconds), Hue (0 ... 360), Saturation (0 ... 100), Brightness (0 ... 100), and Kelvin (2500 ... 9000).
 
 Applies a colour to the specified bulb(s). Returns JSON specifying lights which succeeded and those which failed.
 
-### Info
+#### Info
 
-Endpoint `GET /all/info` or `GET /:light/info` or `GET /all/information` or `GET /:light/information`
+Endpoint `GET /api/all/info` or `GET /api/:light/info` or `GET /api/all/information` or `GET /api/:light/information`
 
 Gets basic light information about the specified bulb(s). Returns JSON.
 
-### State
+#### State
 
-Endpoint `GET /all/state` or `GET /:light/state`
+Endpoint `GET /api/all/state` or `GET /api/:light/state`
 
 Gets the current state of the specified bulb(s). Returns JSON.
 
-### Firmware Version
+#### Firmware Version
 
-Endpoint `GET /all/firmware` or `GET /:light/firmware`
+Endpoint `GET /api/all/firmware` or `GET /api/:light/firmware`
 
 Gets information about the firmware version of the specified bulb(s). Returns JSON.
 
-### Hardware Version
+#### Hardware Version
 
-Endpoint `GET /all/hardware` or `GET /:light/firmware`
+Endpoint `GET /api/all/hardware` or `GET /api/:light/firmware`
 
 Gets information about the hardware version of the specified bulb(s). Returns JSON.
 
-### Firmware Information
+#### Firmware Information
 
-Endpoint `GET /all/firmwareinfo` or `GET /:light/firmwareinfo` or `GET /all/firmwareinfo` or `GET /:light/firmwareinfo`
+Endpoint `GET /api/all/firmwareinfo` or `GET /api/:light/firmwareinfo` or `GET /api/all/firmwareinfo` or `GET /api/:light/firmwareinfo`
 
 Gets firmware information for the specified bulb(s). Returns JSON.
 
-### Wifi Statistics
+#### Wifi Statistics
 
-Endpoint `GET /all/wifistats` or `GET /:light/wifistats` or `GET /all/wifiStats` or `GET /:light/wifiStats`
+Endpoint `GET /api/all/wifistats` or `GET /api/:light/wifistats` or `GET /api/all/wifiStats` or `GET /api/:light/wifiStats`
 
 Gets Wifi statistics for the specified bulb(s). Returns JSON.
 
-### Wifi Version
+#### Wifi Version
 
-Endpoint `GET /all/wifiversion` or `GET /:light/wifiversion` or `GET /all/wifiVersion` or `GET /:light/wifiVersion`
+Endpoint `GET /api/all/wifiversion` or `GET /api/:light/wifiversion` or `GET /api/all/wifiVersion` or `GET /api/:light/wifiVersion`
 
 Gets Wifi version information for the specified bulb(s). Returns JSON.
 
-### Ambient Light
+#### Ambient Light
 
-Endpoint `GET /all/ambientlight` or `GET /:light/ambientlight` or `GET /all/ambientLight` or `GET /:light/ambientLight`
+Endpoint `GET /api/all/ambientlight` or `GET /api/:light/ambientlight` or `GET /api/all/ambientLight` or `GET /api/:light/ambientLight`
 
 Gets information about the ambient light hitting the bulb, for the specified bulb(s). Returns JSON.
 
