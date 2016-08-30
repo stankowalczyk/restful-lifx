@@ -1,12 +1,13 @@
-import process from 'process';
+import process     from 'process';
 
-import bodyParser from 'body-parser';
-import express    from 'express';
-import moment     from 'moment';
+import bodyParser  from 'body-parser';
+import express     from 'express';
+import moment      from 'moment';
 
-import all        from './routes/all';
-import individual from './routes/individual';
-import lifx       from './lifx';
+import all         from './routes/all';
+import clientRoute from './routes/client';
+import individual  from './routes/individual';
+import lifx        from './lifx';
 
 function toInt(value) {
   return Number(value);
@@ -84,6 +85,11 @@ router.get('/:light/wifiversion',  individual.checkLight, individual.wifiVersion
 router.get('/:light/wifiVersion',  individual.checkLight, individual.wifiVersion);
 router.get('/:light/ambientlight', individual.checkLight, individual.ambientLight);
 router.get('/:light/ambientLight', individual.checkLight, individual.ambientLight);
+
+router.put('/startdiscovery', clientRoute.startDiscovery);
+router.put('/startDiscovery', clientRoute.startDiscovery);
+router.put('/stopdiscovery',  clientRoute.stopDiscovery);
+router.put('/stopDiscovery',  clientRoute.stopDiscovery);
 
 app.use('/api', router);
 
