@@ -54,7 +54,7 @@ export default class Individual {
   }
 
   static lightInfo(req, res) {
-    return res.status(200).send(req.simplifiedLight);
+    return res.status(200).send(lifx.simplifyLightObject(req.light));
   }
 
   static lightState(req, res) {
