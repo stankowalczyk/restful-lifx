@@ -41,6 +41,8 @@ Returns blank body, refer to Http status code.
 
 ### Lights
 
+Please note, that no lights need to be provided when using an `all` route. When interacting with an individual light, the url parameter must have a light identifier in it. When interacting with a group of lights, you must specify the group of lights as a comma separated string - this must reside as a `lights` field in either the header of the request or body.
+
 #### Get all lights
 
 Endpoint: `GET /api/all/bulbs`
@@ -49,19 +51,19 @@ Returns JSON, an array of all lights with basic information about them.
 
 #### On
 
-Endpoint `PUT /api/all/on` or `PUT /api/:light/on`
+Endpoint `PUT /api/all/on` or `PUT /api/:light/on` or `PUT /api/group/on`
 
 Turns on the specified bulb(s). Returns JSON specifying lights which succeeded and those which failed.
 
 #### Off
 
-Endpoint `PUT /api/all/off` or `PUT /api/:light/off`
+Endpoint `PUT /api/all/off` or `PUT /api/:light/off` or `PUT /api/group/off`
 
 Turns off the specified bulb(s). Returns JSON specifying lights which succeeded and those which failed.
 
 #### Colour
 
-Endpoint `PUT /api/all/colour` or `PUT /api/:light/colour`
+Endpoint `PUT /api/all/colour` or `PUT /api/:light/colour` or `PUT /api/group/colour`
 
 With parameters: Duration (in milliseconds), Hue (0 ... 360), Saturation (0 ... 100), Brightness (0 ... 100), and Kelvin (2500 ... 9000).
 
@@ -69,49 +71,49 @@ Applies a colour to the specified bulb(s). Returns JSON specifying lights which 
 
 #### Info
 
-Endpoint `GET /api/all/info` or `GET /api/:light/info` or `GET /api/all/information` or `GET /api/:light/information`
+Endpoint `GET /api/all/info` or `GET /api/:light/info` or `PUT /api/group/info`  or `GET /api/all/information` or `GET /api/:light/information`or `PUT /api/group/information`
 
 Gets basic light information about the specified bulb(s). Returns JSON.
 
 #### State
 
-Endpoint `GET /api/all/state` or `GET /api/:light/state`
+Endpoint `GET /api/all/state` or `GET /api/:light/state` or `PUT /api/group/state`
 
 Gets the current state of the specified bulb(s). Returns JSON.
 
 #### Firmware Version
 
-Endpoint `GET /api/all/firmware` or `GET /api/:light/firmware`
+Endpoint `GET /api/all/firmware` or `GET /api/:light/firmware` or `PUT /api/group/firmware`
 
 Gets information about the firmware version of the specified bulb(s). Returns JSON.
 
 #### Hardware Version
 
-Endpoint `GET /api/all/hardware` or `GET /api/:light/firmware`
+Endpoint `GET /api/all/hardware` or `GET /api/:light/hardware` or `PUT /api/group/hardware`
 
 Gets information about the hardware version of the specified bulb(s). Returns JSON.
 
 #### Firmware Information
 
-Endpoint `GET /api/all/firmwareinfo` or `GET /api/:light/firmwareinfo` or `GET /api/all/firmwareinfo` or `GET /api/:light/firmwareinfo`
+Endpoint `GET /api/all/firmwareinfo` or `GET /api/:light/firmwareinfo` or `PUT /api/group/firmwareinfo` or `GET /api/all/firmwareinfo` or `GET /api/:light/firmwareinfo` or `PUT /api/group/firmwareinfo`
 
 Gets firmware information for the specified bulb(s). Returns JSON.
 
 #### Wifi Statistics
 
-Endpoint `GET /api/all/wifistats` or `GET /api/:light/wifistats` or `GET /api/all/wifiStats` or `GET /api/:light/wifiStats`
+Endpoint `GET /api/all/wifistats` or `GET /api/:light/wifistats` or `PUT /api/group/wifistats`  or `GET /api/all/wifiStats` or `GET /api/:light/wifiStats`or `PUT /api/group/wifiStats`
 
 Gets Wifi statistics for the specified bulb(s). Returns JSON.
 
 #### Wifi Version
 
-Endpoint `GET /api/all/wifiversion` or `GET /api/:light/wifiversion` or `GET /api/all/wifiVersion` or `GET /api/:light/wifiVersion`
+Endpoint `GET /api/all/wifiversion` or `GET /api/:light/wifiversion` or `PUT /api/group/wifiversion`  or `GET /api/all/wifiVersion` or `GET /api/:light/wifiVersion`or `PUT /api/group/wifiVersion`
 
 Gets Wifi version information for the specified bulb(s). Returns JSON.
 
 #### Ambient Light
 
-Endpoint `GET /api/all/ambientlight` or `GET /api/:light/ambientlight` or `GET /api/all/ambientLight` or `GET /api/:light/ambientLight`
+Endpoint `GET /api/all/ambientlight` or `GET /api/:light/ambientlight` or `PUT /api/group/ambientlight` or `GET /api/all/ambientLight` or `GET /api/:light/ambientLight` or `PUT /api/group/ambientLight`
 
 Gets information about the ambient light hitting the bulb, for the specified bulb(s). Returns JSON.
 
