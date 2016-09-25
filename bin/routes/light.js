@@ -2,19 +2,7 @@ import Promise from 'bluebird';
 
 import lifx from '../lifx';
 
-export default class Individual {
-
-  static checkLight(req, res, next) {
-    if (!req.params.light) return res.status(400).send({ error: 'Missing light parameter'} );
-
-    let light = lifx.getClient().light(req.params.light);
-    if (!light) return res.status(400).send({ error: `Light with id: '${req.params.light}' not found` });
-
-    req.light = light;
-    req.simplifiedLight = lifx.simplifyLightObject(light);
-
-    next();
-  }
+export default class LightRoute {
 
   static on(req, res) {
     let result = lifx.validateDurationParameter(req.body);
@@ -22,7 +10,7 @@ export default class Individual {
 
     let {duration} = req.body;
 
-    return lifx.turnOn([ req.light ], duration)
+    return lifx.turnOn(req.lights, duration)
     .then(result => {
       return res.status(200).send(result);
     });
@@ -34,7 +22,7 @@ export default class Individual {
 
     let {duration} = req.body;
 
-    return lifx.turnOff([ req.light ], duration)
+    return lifx.turnOff(req.lights, duration)
     .then(result => {
       return res.status(200).send(result);
     });
@@ -47,42 +35,42 @@ export default class Individual {
 
     let {hue, saturation, brightness, kelvin, duration} = req.body;
 
-    return lifx.changeColour([ req.light ], duration, hue, saturation, brightness, kelvin)
+    return lifx.changeColour(req.lights, duration, hue, saturation, brightness, kelvin)
     .then(result => {
       return res.status(200).send(result);
     });
   }
 
   static lightInfo(req, res) {
-    return res.status(200).send(lifx.simplifyLightObject(req.light));
+    return res.status(200).send(lifx.getBulbInfo(req.lights));
   }
 
   static lightState(req, res) {
-    return lifx.getBulbState([ req.light ]).then(result => res.status(200).send(result));
+    return lifx.getBulbState(req.lights).then(result => res.status(200).send(result));
   }
 
   static firmwareVersion(req, res) {
-    return lifx.getFirmwareVersion([ req.light ]).then(result => res.status(200).send(result));
+    return lifx.getFirmwareVersion(req.lights).then(result => res.status(200).send(result));
   }
 
   static hardwareVersion(req, res) {
-    return lifx.getHardwareVersion([ req.light ]).then(result => res.status(200).send(result));
+    return lifx.getHardwareVersion(req.lights).then(result => res.status(200).send(result));
   }
 
   static firmwareInfo(req, res) {
-    return lifx.getFirmwareInfo([ req.light ]).then(result => res.status(200).send(result));
+    return lifx.getFirmwareInfo(req.lights).then(result => res.status(200).send(result));
   }
 
   static wifiStats(req, res) {
-    return lifx.getWifiStats([ req.light ]).then(result => res.status(200).send(result));
+    return lifx.getWifiStats(req.lights).then(result => res.status(200).send(result));
   }
 
   static wifiVersion(req, res) {
-    return lifx.getWifiVersion([ req.light ]).then(result => res.status(200).send(result));
+    return lifx.getWifiVersion(req.lights).then(result => res.status(200).send(result));
   }
 
   static ambientLight(req, res) {
-    return lifx.getAmbientLight([ req.light ]).then(result => res.status(200).send(result));
+    return lifx.getAmbientLight(req.lights).then(result => res.status(200).send(result));
   }
 
 };

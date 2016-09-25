@@ -21,7 +21,7 @@ export default class TargetMiddleware {
     let lights = req.body.lights.split(',');
 
     try {
-      lights.map(light => {
+      lights = lights.map(light => {
         return lifx.getClient().light(light);
       });
     } catch(err) {
