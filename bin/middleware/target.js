@@ -16,9 +16,10 @@ export default class TargetMiddleware {
   }
 
   static checkLights(req, res, next) {
-    if (!req.body.lights) return res.status(400).send({ error: 'Missing "lights" parameter'});
+    if (!req.body.lights && !req.get('lights')) return res.status(400).send({ error: 'Missing "lights" parameter'});
 
-    let lights = req.body.lights.split(',');
+    let lights = req.body.lights? req.body.lights : req.get('lights');
+    lights = lights.split(',');
 
     try {
       lights = lights.map(light => {
