@@ -168,9 +168,9 @@ export default class Lifx {
   }
 
   static getBulbInfo(bulbs = []) {
-    return bulbs.reduce((previousValue, bulb) => {
-      return previousValue.concat(this.simplifyLightObject(bulb));
-    }, []);
+    return bulbs.map(bulb => {
+      return this.simplifyLightObject(bulb);
+    })
   }
 
   static getBulbState(bulbs = []) {
