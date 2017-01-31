@@ -8,9 +8,10 @@ export default class LightRoute {
     if (!previousResult.error)
       previousResult.error = [];
 
-    notFoundLights.forEach(id => {
-      previousResult.error.push(`Light with id '${id}' not found`);
-    });
+    if (notFoundLights)
+      notFoundLights.forEach(id => {
+        previousResult.error.push(`Light with id '${id}' not found`);
+      });
 
     return previousResult;
   }
