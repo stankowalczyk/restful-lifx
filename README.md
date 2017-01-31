@@ -19,7 +19,7 @@ This project is licensed under the terms of the BSD 3-Clause license. Please see
 
 ## Disclaimer
 
-This project uses [node-LIFX](https://www.npmjs.com/package/node-lifx) in order to facilitate communication with LIFX bulbs. This project not affiliated by any parties involved with [node-LIFX](https://www.npmjs.com/package/node-lifx). This project is not affiliated with [LiFi Labs, the makers of LIFX](http://www.lifx.com/pages/about).
+This project uses [node-LIFX](https://www.npmjs.com/package/node-lifx) in order to facilitate communication with LIFX bulbs. This project not affiliated with [node-LIFX](https://www.npmjs.com/package/node-lifx). This project is not affiliated with [LiFi Labs, the makers of LIFX](http://www.lifx.com/pages/about).
 
 ## Endpoints
 
