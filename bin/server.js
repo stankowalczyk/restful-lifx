@@ -1,6 +1,8 @@
 import process    from 'process';
+import os         from 'os';
 
 import bodyParser from 'body-parser';
+import bonjour    from 'bonjour';
 import express    from 'express';
 import moment     from 'moment';
 
@@ -115,3 +117,32 @@ app.listen(port);
 console.log('RESTful-LIFX server started');
 console.log(`Server listening on port: ${port}`);
 console.log(`Log Time\t\t\t\tMethod\tURL`);
+
+
+// Bad code alert
+// Backstory: While using NSD Manager in Android, the host and port of the machine is not
+// resolved. The success or failure callbacks are not called. I've quite possibly made a
+// mistake somewhere - but I am unable to find it. This is a quick and dirty solution,
+// append the port and IP address to the end of the service name, as that appears
+// clearly when looking for beacons in Android. This is not an ideal solution, but neither
+// is seperating out Zeroconf into a seperate app / service.
+
+// Get all the ip addresses associated with this machine
+let interfaces = os.networkInterfaces();
+let addresses = [];
+for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+        var address = interfaces[k][k2];
+        if (address.family === 'IPv4' && !address.internal) {
+            addresses.push(address.address);
+        }
+    }
+}
+
+// if we have addresses, bonjour with all of them
+if (addresses.length > 0) {
+  addresses.forEach(address => {
+    bonjour().publish({ name: `RESTful-LIFX@${address}:${port}`, type: 'http', port: port });
+    console.log(`Started advertising on Bonjour [${address}]`);
+  });
+}

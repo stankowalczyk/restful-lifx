@@ -16,7 +16,8 @@
     "body-parser": "1.15.2",
     "express": "4.14.0",
     "moment": "2.14.1",
-    "node-lifx": "0.6.0"
+    "node-lifx": "0.6.0",
+    "zeroconf": "0.1.4"
   },
   "devDependencies": {
     "babel-cli": "6.9.0",
