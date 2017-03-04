@@ -142,7 +142,10 @@ for (var k in interfaces) {
 // if we have addresses, bonjour with all of them
 if (addresses.length > 0) {
   addresses.forEach(address => {
-    bonjour().publish({ name: `RESTful-LIFX@${address}:${port}`, type: 'http', port: port });
-    console.log(`Started advertising on Bonjour [${address}]`);
+    // Replace all instances of full stops with underscores, NSD Manager in Android does not
+    // appear to process names with full stops correctly.
+    let name = `RESTful-LIFX@${address.replace(/\./g, '_')}:${port}`;
+    bonjour().publish({ name: name, type: 'http', port: port });
+    console.log(`Started advertising on Bonjour [${address}], with the name "${name}"`);
   });
 }
